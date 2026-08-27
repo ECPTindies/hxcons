@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "*.mclint": "jsonc",
+        "*.hx.template": "haxe",
+        ".HConstruct": "haxe"
+    }
+}

@@ -1,0 +1,9 @@
+package hxcons;
+
+class Runner
+{
+    static function main() {
+        var project = new {CLASS_NAME}();
+        Sys.println(haxe.Json.stringify(project.toObject()));
+    }
+}
