@@ -1,0 +1,52 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            artifact-name: windows
+          - os: ubuntu-latest
+            artifact-name: linux
+          - os: macos-latest
+            artifact-name: macos
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v1
+        with:
+          haxe-version: 4.3.4
+
+      - name: Install hxcpp
+        run: haxelib install hxcpp --quiet
+
+      # Windowsのみ、MSVCのcl.exeをPATHに通す
+      - name: Setup MSVC (Windows only)
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Compile build tool itself
+        run: haxe build.hxml
+
+      - name: Run HConstruct build
+        run: |
+          ${{ matrix.os == 'windows-latest' && '.\build-tool\bin\Build.exe' || './build-tool/bin/Build' }} MyProject.HConstruct
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-${{ matrix.artifact-name }}
+          path: |
+            out/MyApp
+            out/MyApp.exe
+          if-no-files-found: ignore
