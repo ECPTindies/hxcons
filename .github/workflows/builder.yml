@@ -37,10 +37,8 @@ jobs:
         shell: bash
         run: |
             haxelib install hxcpp --quiet
-            if ["${{ matrix.os }}" == macos-latest]; then
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
             grep -rn "IsNull" "$HXCPP_PATH/include" || true
-            fi
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
