@@ -32,20 +32,13 @@ jobs:
         run: |
             haxelib install hxcpp --quiet
 
-      - name: Inspect problematic header
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            haxelib install hxcpp --quiet
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            grep -n "^namespace" "$HXCPP_PATH/include/hx/LessThanEq.h"
-
-      - name: Check include chain
+      - name: Check hxcpp lib directory
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            grep -rn "LessThanEq.h" "$HXCPP_PATH/include"
+            find "$HXCPP_PATH" -maxdepth 1
+            find "$HXCPP_PATH" -iname "*.a"
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
@@ -60,13 +53,6 @@ jobs:
           ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }} samples/.HConstruct
         continue-on-error: true
     
-      - name: Verify fix manually
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            clang++ -DHXCPP_API_LEVEL=430 -std=c++11 -Iout/cpp/include -I"${HXCPP_PATH}/include" -c out/cpp/src/Std.cpp -o /tmp/Std.o
-
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
