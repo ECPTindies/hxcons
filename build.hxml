@@ -1,0 +1,3 @@
+-main Build
+-cp build-tool
+-cpp build-tool/bin
