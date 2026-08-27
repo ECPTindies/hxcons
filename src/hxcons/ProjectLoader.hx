@@ -3,7 +3,7 @@ package hxcons;
 using StringTools;
 
 class ProjectLoader {
-    public static function load(hconstructPath:String):Dynami
+    public static function load(hconstructPath:String): Dynamic
     {
         var content = sys.io.File.getContent(hconstructPath);
 
