@@ -49,6 +49,7 @@ jobs:
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
+            export HXCPP="$HXCPP_PATH"
             cd "$HXCPP_PATH/project"
             haxelib run hxcpp Build.xml -Dmac -DHXCPP_M64
 
