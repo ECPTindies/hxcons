@@ -26,9 +26,13 @@ jobs:
         uses: krdlab/setup-haxe@v2.1.0
         with:
           haxe-version: 4.3.7
-
+        
       - name: Install hxcpp
-        run: haxelib install hxcpp --quiet
+        run: |
+            haxelib install hxcpp 4.3.154 --quiet
+            haxelib set hxcpp 4.3.154
+            haxelib list hxcpp
+            haxelib path hxcpp
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
