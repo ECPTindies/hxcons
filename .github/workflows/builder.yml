@@ -40,6 +40,19 @@ jobs:
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
             grep -n "^namespace" "$HXCPP_PATH/include/hx/LessThanEq.h"
 
+      - name: Check include chain
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
+            grep -rn "LessThanEq.h" "$HXCPP_PATH/include"
+
+      - name: Check Std.cpp includes
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            head -n 20 out/cpp/src/Std.cpp
+
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
         if: matrix.os == 'windows-latest'
