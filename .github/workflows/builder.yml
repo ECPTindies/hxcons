@@ -32,18 +32,25 @@ jobs:
         run: |
             haxelib install hxcpp --quiet
 
-      - name: Check hxcpp lib directory
+      - name: Check hxcpp bin directory
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            find "$HXCPP_PATH" -maxdepth 1
-            find "$HXCPP_PATH" -iname "*.a"
+            find "$HXCPP_PATH/bin" -type f
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1.13.0
+    
+      - name: Build hxcpp runtime (release version)
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
+            cd "$HXCPP_PATH/project"
+            neko build.n
 
       - name: Compile build tool itself
         run: haxe build.hxml
