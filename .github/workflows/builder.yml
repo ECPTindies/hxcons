@@ -9,6 +9,7 @@ on:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - os: windows-latest
@@ -26,12 +27,17 @@ jobs:
         uses: krdlab/setup-haxe@v2.1.0
         with:
           haxe-version: 4.3.7
-        
+
       - name: Install hxcpp
         run: |
-            haxelib install hxcpp --quiet
-            haxelib list hxcpp
-            haxelib path hxcpp
+          haxelib info hxcpp
+          haxelib install hxcpp --quiet
+          haxelib list hxcpp
+          haxelib path hxcpp
+
+      - name: List available Xcode versions
+        if: matrix.os == 'macos-latest'
+        run: ls /Applications | grep Xcode
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
