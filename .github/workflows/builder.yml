@@ -38,7 +38,7 @@ jobs:
         run: |
             haxelib install hxcpp --quiet
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            grep -rn "IsNull" "$HXCPP_PATH/include" || true
+            sed -n '220,270p' "$HXCPP_PATH/include/hx/LessThanEq.h"
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
