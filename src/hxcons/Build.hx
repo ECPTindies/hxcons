@@ -36,7 +36,7 @@ typedef BuildConfig = {
 class Build {
     static function main() {
         var args = Sys.args();
-        var hconstructPath = args.length > 0 ? args[0] : "MyProject.HConstruct";
+        var hconstructPath = args.length > 0 ? args[0] : ".HConstruct";
 
         var config:BuildConfig = cast ProjectLoader.load(hconstructPath);
 
