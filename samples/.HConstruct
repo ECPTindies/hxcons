@@ -7,7 +7,7 @@ class ExampleProject extends HConstruct
         setApplyTitle("MyApp");
         setApplyVersion("0.1.0");
 
-        setSrcMainClass("Main");
+        setSrcMainClass("samples.src.Main");
         addSourceDir("src");
         addSourceDir("shared"); // 複数フォルダのテスト用
 
