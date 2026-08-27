@@ -32,52 +32,10 @@ jobs:
         run: |
             haxelib install hxcpp --quiet
 
-      - name: Check hxcpp bin directory
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            find "$HXCPP_PATH/bin" -type f
-
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
         if: matrix.os == 'windows-latest'
         uses: ilammy/msvc-dev-cmd@v1.13.0
-    
-      - name: Check toolchain directory
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            find "$HXCPP_PATH/toolchain" -iname "haxe-target.xml"
-            find "$HXCPP_PATH" -iname "haxe-target.xml"
-        
-      - name: Inspect BuildCommon.xml
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            cat "$HXCPP_PATH/build-tool/BuildCommon.xml"
-    
-      - name: Inspect project Build.xml
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            cat "$HXCPP_PATH/project/Build.xml"
-    
-      - name: Build hxcpp runtime (release version)
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            HXCPP_PATH="${HXCPP_PATH%/}"
-            export HXCPP="$HXCPP_PATH"
-
-            cd "$HXCPP_PATH/project"
-            ln -s "$HXCPP_PATH/src/hx/libs" libs
-
-            haxelib run hxcpp Build.xml -Dmac -DHXCPP_M64
 
       - name: Compile build tool itself
         run: haxe build.hxml
