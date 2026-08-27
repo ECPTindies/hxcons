@@ -52,7 +52,7 @@ jobs:
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
             cd "$HXCPP_PATH"
-            haxelib run hxcpp Build.xml
+            neko build.n
 
       - name: List available Xcode versions
         if: matrix.os == 'macos-latest'
