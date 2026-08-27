@@ -38,6 +38,15 @@ jobs:
             else
             haxelib install hxcpp --quiet
             fi
+      - name: Inspect hxcpp source layout
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            echo "HXCPP_PATH=$HXCPP_PATH"
+            find "$HXCPP_PATH" -maxdepth 2 -type d
+            find "$HXCPP_PATH" -iname "build.xml"
+            find "$HXCPP_PATH" -iname "Build.xml"
                 
       - name: Build hxcpp runtime library
         if: matrix.os == 'macos-latest'
