@@ -1,5 +1,3 @@
-package hxcons;
-
 class Runner
 {
     static function main() {

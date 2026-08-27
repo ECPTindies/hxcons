@@ -28,8 +28,8 @@ class ProjectLoader {
         sys.io.File.saveContent(stageDir + "/HConstruct.hx", stripPackageDecl(hconstructSrc));
 
         // Runnerをクラス名で置換して生成
-        var runnerSrc = sys.io.File.getContent("src/hxcons/Runner.hx.template")
-            .replace("{CLASS_NAME}", className);
+        var runnerSrc = sys.io.File.getContent("src/hxcons/Runner.hx.template").replace("{CLASS_NAME}", className);
+        runnerSrc = stripPackageDecl(runnerSrc);
         sys.io.File.saveContent(stageDir + "/Runner.hx", runnerSrc);
 
         // --interpで評価し、標準出力のJSONを受け取る
