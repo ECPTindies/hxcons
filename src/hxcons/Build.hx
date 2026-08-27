@@ -48,8 +48,8 @@ class Build {
         log('=== Stage 1: .hx -> .cpp ===');
         stageHxToCpp(config);
 
-        log('=== Stage 2: .cpp -> .exe ===');
-        stageCppToExe(config);
+        //log('=== Stage 2: .cpp -> .exe ===');
+        //stageCppToExe(config);
 
         log('Done. Output: ${config.outDir}/${config.exeName}');
     }
@@ -65,7 +65,7 @@ class Build {
 
         hxArgs.push("-main"); hxArgs.push(config.mainClass);
         hxArgs.push("-cpp"); hxArgs.push(cppDir);
-        hxArgs.push("-D"); hxArgs.push("no-compilation");
+        //hxArgs.push("-D"); hxArgs.push("no-compilation");
 
         for (d in config.defines) { hxArgs.push("-D"); hxArgs.push(d); }
         if (config.debug) hxArgs.push("-debug");
@@ -73,6 +73,7 @@ class Build {
         runCmd("haxe", hxArgs);
     }
 
+    /*
     static function stageCppToExe(config:BuildConfig)
     {
         var cppDir = config.outDir + "/cpp";
@@ -117,6 +118,7 @@ class Build {
 
         runCmd(compiler, args);
     }
+        */
 
     static function resolveCompiler(pref:String):String {
         if (pref != "auto") return pref;
