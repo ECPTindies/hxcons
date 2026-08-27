@@ -29,8 +29,8 @@ jobs:
         
       - name: Install hxcpp
         run: |
-            haxelib install hxcpp 4.3.154 --quiet
-            haxelib set hxcpp 4.3.154
+            haxelib install hxcpp 4.2.0 --quiet
+            haxelib set hxcpp 4.2.0
             haxelib list hxcpp
             haxelib path hxcpp
 
