@@ -3,7 +3,8 @@ package hxcons;
 using StringTools;
 
 class ProjectLoader {
-    public static function load(hconstructPath:String):Dynamic {
+    public static function load(hconstructPath:String):Dynami
+    {
         var content = sys.io.File.getContent(hconstructPath);
 
         var classNameRe = ~/class\s+(\w+)\s+extends\s+HConstruct/;
@@ -22,9 +23,9 @@ class ProjectLoader {
         // .HConstruct -> .hx (中身はそのまま)
         sys.io.File.saveContent(targetDir + "/" + className + ".hx", content);
 
+        var hconstructSrc = sys.io.File.getContent("src/hxcons/HConstruct.hx");
         // ベースクラスも同じclasspathに配置
-        sys.io.File.saveContent(stageDir + "/HConstruct.hx",
-            sys.io.File.getContent("src/hxcons/HConstruct.hx"));
+        sys.io.File.saveContent(stageDir + "/HConstruct.hx", stripPackageDecl(hconstructSrc));
 
         // Runnerをクラス名で置換して生成
         var runnerSrc = sys.io.File.getContent("src/hxcons/Runner.hx.template")
@@ -41,5 +42,11 @@ class ProjectLoader {
         if (code != 0) throw 'Failed to evaluate $hconstructPath:\n$err';
 
         return haxe.Json.parse(out);
+    }
+
+    static function stripPackageDecl(src:String):String
+    {
+        var re = ~/^\s*package\s+[\w.]*\s*;/m;
+        return re.replace(src, "package;");
     }
 }
