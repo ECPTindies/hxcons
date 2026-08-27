@@ -30,28 +30,37 @@ jobs:
 
       - name: Install hxcpp
         run: |
+            if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            cd "$HXCPP_PATH/tools/hxcpp"
+            haxe compile.hxml
+            else
             haxelib install hxcpp --quiet
+            fi
 
-      - name: Inspect problematic header
+      - name: Inspect new build-tool
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
-            haxelib install hxcpp --quiet
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            grep -n "^namespace" "$HXCPP_PATH/include/hx/LessThanEq.h"
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            ls -la "$HXCPP_PATH/build-tool"
+            cat "$HXCPP_PATH/build-tool/README.md" 2>/dev/null || true
+            find "$HXCPP_PATH/build-tool" -iname "*.hxml"
 
-      - name: Check include chain
+      - name: Build hxcpp runtime library
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
-            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            grep -rn "LessThanEq.h" "$HXCPP_PATH/include"
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            cd "$HXCPP_PATH/project"
+            pwd
+            ls -la
+            neko ./build.n
 
-      - name: Check Std.cpp includes
+      - name: List available Xcode versions
         if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            head -n 20 out/cpp/src/Std.cpp
+        run: ls /Applications | grep Xcode
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
