@@ -74,11 +74,13 @@ class Build {
     static function renameOutput(config:BuildConfig) {
         // mainClassの最後のドット以降(パッケージを除いたクラス名)を取得
         var parts = config.mainClass.split(".");
-        var generatedName = parts[parts.length - 1];
+        var baseName = parts[parts.length - 1];
 
         var isWindows = Sys.systemName() == "Windows";
         var ext = isWindows ? ".exe" : "";
+        var debugSuffix = config.debug ? "-debug" : "";
 
+        var generatedName = baseName + debugSuffix;
         var generatedPath = config.outDir + "/" + generatedName + ext;
         var targetPath = config.outDir + "/" + config.exeName + ext;
 
