@@ -73,14 +73,15 @@ class Build {
         runCmd("haxe", hxArgs);
     }
 
-    static function stageCppToExe(config:BuildConfig) {
+    static function stageCppToExe(config:BuildConfig)
+    {
         var cppDir = config.outDir + "/cpp";
         var srcDir = cppDir + "/src";
 
-        var hxcppPath = runCmd("haxelib", ["path", "hxcpp"]).split("\n")[0].trim();
+        var hxcppPath = StringTools.trim(runCmd("haxelib", ["path", "hxcpp"]).split("\n")[0]);
 
         var sources = [for (f in FileSystem.readDirectory(srcDir))
-            if (f.endsWith(".cpp")) srcDir + "/" + f];
+            if (StringTools.endsWith(f, ".cpp")) srcDir + "/" + f];
 
         var compiler = resolveCompiler(config.compiler);
         var isMsvc = compiler == "cl";
@@ -91,6 +92,7 @@ class Build {
         var args:Array<String> = [];
 
         if (isMsvc) {
+            args = args.concat(["/DHXCPP_API_LEVEL=430"]);
             args = args.concat(["/EHsc", "/I" + cppDir + "/include", "/I" + hxcppPath + "/include"]);
             args = args.concat(config.extraIncludes.map(i -> "/I" + i));
             args = args.concat(sources);
@@ -100,6 +102,7 @@ class Build {
             args.push("hxcpp.lib");
             args = args.concat(config.extraLibs.map(l -> l.endsWith(".lib") ? l : l + ".lib"));
         } else {
+            args = args.concat(["-DHXCPP_API_LEVEL=430"]);
             args = args.concat(["-std=c++11", "-I" + cppDir + "/include", "-I" + hxcppPath + "/include"]);
             args = args.concat(config.extraIncludes.map(i -> "-I" + i));
             args = args.concat(sources);
