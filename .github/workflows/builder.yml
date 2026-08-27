@@ -39,13 +39,13 @@ jobs:
             haxelib install hxcpp --quiet
             fi
 
-      - name: Inspect hxcpp project directory
+      - name: Find Build.xml
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
-            ls -la "$HXCPP_PATH/project"
-                        
+            ls -la "$HXCPP_PATH"
+
       - name: Build hxcpp runtime library
         if: matrix.os == 'macos-latest'
         shell: bash
