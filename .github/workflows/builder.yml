@@ -60,18 +60,12 @@ jobs:
           ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }} samples/.HConstruct
         continue-on-error: true
     
-      - name: Inspect Std.cpp includes
-        if: matrix.os == 'macos-latest'
-        shell: bash
-        run: |
-            sed -n '60,90p' out/cpp/src/Std.cpp
-    
-      - name: Inspect hxcpp.h around LessThanEq include
+      - name: Verify fix manually
         if: matrix.os == 'macos-latest'
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            sed -n '360,390p' "$HXCPP_PATH/include/hxcpp.h"
+            clang++ -DHXCPP_API_LEVEL=430 -std=c++11 -Iout/cpp/include -I"${HXCPP_PATH}/include" -c out/cpp/src/Std.cpp -o /tmp/Std.o
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
