@@ -30,9 +30,33 @@ jobs:
 
       - name: Install hxcpp
         run: |
+            if [ "${{ matrix.os }}" = "macos-latest" ]; then
+            haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            cd "$HXCPP_PATH/tools/hxcpp"
+            haxe compile.hxml
+            else
             haxelib install hxcpp --quiet
-            haxelib list hxcpp
-            haxelib path hxcpp
+            fi
+
+      - name: Inspect hxcpp project directory
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            ls -la "$HXCPP_PATH/project"
+                        
+      - name: Build hxcpp runtime library
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            cd "$HXCPP_PATH"
+            neko build.n
+
+      - name: List available Xcode versions
+        if: matrix.os == 'macos-latest'
+        run: ls /Applications | grep Xcode
 
       # Windowsのみ、MSVCのcl.exeをPATHに通す
       - name: Setup MSVC (Windows only)
