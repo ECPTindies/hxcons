@@ -71,10 +71,12 @@ jobs:
         shell: bash
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
-            HXCPP_PATH="${HXCPP_PATH%/}"   # 末尾スラッシュを除去
+            HXCPP_PATH="${HXCPP_PATH%/}"
             export HXCPP="$HXCPP_PATH"
-            echo "HXCPP=$HXCPP"
+
             cd "$HXCPP_PATH/project"
+            ln -s "$HXCPP_PATH/src/hx/libs" libs
+
             haxelib run hxcpp Build.xml -Dmac -DHXCPP_M64
 
       - name: Compile build tool itself
