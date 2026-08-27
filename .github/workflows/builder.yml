@@ -50,7 +50,8 @@ jobs:
         run: |
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
             cd "$HXCPP_PATH/project"
-            neko build.n
+            ls -la
+            neko ./build.n
 
       - name: Compile build tool itself
         run: haxe build.hxml
