@@ -16,7 +16,7 @@ jobs:
             artifact-name: windows
           - os: ubuntu-latest
             artifact-name: linux
-          - os: macos-13
+          - os: macos-latest
             artifact-name: macos
     runs-on: ${{ matrix.os }}
 
@@ -30,10 +30,9 @@ jobs:
 
       - name: Install hxcpp
         run: |
-          haxelib info hxcpp
-          haxelib install hxcpp --quiet
-          haxelib list hxcpp
-          haxelib path hxcpp
+            haxelib git hxcpp https://github.com/HaxeFoundation/hxcpp.git
+            haxelib list hxcpp
+            haxelib path hxcpp
 
       - name: List available Xcode versions
         if: matrix.os == 'macos-latest'
