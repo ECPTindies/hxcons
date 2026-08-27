@@ -51,6 +51,20 @@ jobs:
             HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
             find "$HXCPP_PATH/toolchain" -iname "haxe-target.xml"
             find "$HXCPP_PATH" -iname "haxe-target.xml"
+        
+      - name: Inspect BuildCommon.xml
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
+            cat "$HXCPP_PATH/build-tool/BuildCommon.xml"
+    
+      - name: Inspect project Build.xml
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | grep -v '^-D' | head -n 1)
+            cat "$HXCPP_PATH/project/Build.xml"
     
       - name: Build hxcpp runtime (release version)
         if: matrix.os == 'macos-latest'
