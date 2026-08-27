@@ -1,3 +1,3 @@
--main Build
--cp build-tool
--cpp build-tool/bin
+-main hxcons.Build
+-cp src
+-cpp bin

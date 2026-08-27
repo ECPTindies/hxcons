@@ -1,0 +1,24 @@
+class ExampleProject extends HConstruct
+{
+    public function new()
+    {
+        super();
+
+        setApplyTitle("MyApp");
+        setApplyVersion("0.1.0");
+
+        setSrcMainClass("Main");
+        addSourceDir("src");
+        addSourceDir("shared"); // 複数フォルダのテスト用
+
+        setExportDir("out");
+        setCompiler("auto");
+        setDebug(true);
+
+        addInclude("extra/include");
+        addLibPath("third_party/sdl2/lib");
+        addLib("SDL2");
+
+        addDefine("MY_FEATURE");
+    }
+}

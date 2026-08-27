@@ -24,7 +24,7 @@ class ProjectLoader {
 
         // ベースクラスも同じclasspathに配置
         sys.io.File.saveContent(stageDir + "/HConstruct.hx",
-            sys.io.File.getContent("build-tool/HConstruct.hx"));
+            sys.io.File.getContent("src/hxcons/HConstruct.hx"));
 
         // Runnerをクラス名で置換して生成
         var runnerSrc = sys.io.File.getContent("build-tool/Runner.hx.template")
