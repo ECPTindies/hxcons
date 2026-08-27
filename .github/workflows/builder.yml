@@ -38,6 +38,14 @@ jobs:
             else
             haxelib install hxcpp --quiet
             fi
+                
+      - name: Build hxcpp runtime library
+        if: matrix.os == 'macos-latest'
+        shell: bash
+        run: |
+            HXCPP_PATH=$(haxelib path hxcpp | head -n 1)
+            cd "$HXCPP_PATH"
+            haxelib run hxcpp build.xml
 
       - name: List available Xcode versions
         if: matrix.os == 'macos-latest'
