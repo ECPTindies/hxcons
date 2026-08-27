@@ -36,7 +36,7 @@ typedef BuildConfig = {
 class Build {
     static function main() {
         var args = Sys.args();
-        var hconstructPath = args.length > 0 ? args[0] : ".HConstruct";
+        var hconstructPath = args.length > 0 ? args[0] : "MyProject.HConstruct";
 
         var config:BuildConfig = cast ProjectLoader.load(hconstructPath);
 
@@ -45,17 +45,14 @@ class Build {
         if (config.sourceDirs == null || config.sourceDirs.length == 0)
             throw "sourceDirs is empty. At least one addSourceDir(...) is required.";
 
-        log('=== Stage 1: .hx -> .cpp ===');
-        stageHxToCpp(config);
+        log('=== Build: .hx -> .exe (hxcpp auto build) ===');
+        stageBuild(config);
 
-        //log('=== Stage 2: .cpp -> .exe ===');
-        //stageCppToExe(config);
-
-        log('Done. Output: ${config.outDir}/${config.exeName}');
+        log('Done. Listing output directory: ${config.outDir}');
+        listOutput(config.outDir);
     }
-
-    static function stageHxToCpp(config:BuildConfig) {
-        var cppDir = config.outDir + "/cpp";
+    
+    static function stageBuild(config:BuildConfig) {
         var hxArgs:Array<String> = [];
 
         for (dir in config.sourceDirs) {
@@ -64,61 +61,49 @@ class Build {
         }
 
         hxArgs.push("-main"); hxArgs.push(config.mainClass);
-        hxArgs.push("-cpp"); hxArgs.push(cppDir);
-        //hxArgs.push("-D"); hxArgs.push("no-compilation");
+        hxArgs.push("-cpp"); hxArgs.push(config.outDir);
 
         for (d in config.defines) { hxArgs.push("-D"); hxArgs.push(d); }
         if (config.debug) hxArgs.push("-debug");
 
         runCmd("haxe", hxArgs);
+
+        renameOutput(config);
     }
 
-    /*
-    static function stageCppToExe(config:BuildConfig)
-    {
-        var cppDir = config.outDir + "/cpp";
-        var srcDir = cppDir + "/src";
+    static function renameOutput(config:BuildConfig) {
+        // mainClassの最後のドット以降(パッケージを除いたクラス名)を取得
+        var parts = config.mainClass.split(".");
+        var generatedName = parts[parts.length - 1];
 
-        var hxcppPath = StringTools.trim(runCmd("haxelib", ["path", "hxcpp"]).split("\n")[0]);
+        var isWindows = Sys.systemName() == "Windows";
+        var ext = isWindows ? ".exe" : "";
 
-        var sources = [for (f in FileSystem.readDirectory(srcDir))
-            if (StringTools.endsWith(f, ".cpp")) srcDir + "/" + f];
+        var generatedPath = config.outDir + "/" + generatedName + ext;
+        var targetPath = config.outDir + "/" + config.exeName + ext;
 
-        var compiler = resolveCompiler(config.compiler);
-        var isMsvc = compiler == "cl";
-
-        var exePath = config.outDir + "/" + config.exeName +
-            (Sys.systemName() == "Windows" ? ".exe" : "");
-
-        var args:Array<String> = [];
-
-        if (isMsvc) {
-            args = args.concat(["/DHXCPP_API_LEVEL=430"]);
-            args = args.concat(["/EHsc", "/I" + cppDir + "/include", "/I" + hxcppPath + "/include"]);
-            args = args.concat(config.extraIncludes.map(i -> "/I" + i));
-            args = args.concat(sources);
-            args = args.concat(["/Fe:" + exePath, "/link"]);
-            args = args.concat(["/LIBPATH:" + hxcppPath + "/lib"]);
-            args = args.concat(config.extraLibPaths.map(p -> "/LIBPATH:" + p));
-            args.push("hxcpp.lib");
-            args = args.concat(config.extraLibs.map(l -> l.endsWith(".lib") ? l : l + ".lib"));
-        } else {
-            args = args.concat(["-DHXCPP_API_LEVEL=430"]);
-            args = args.concat(["-std=c++11", "-I" + cppDir + "/include", "-I" + hxcppPath + "/include"]);
-            args = args.concat(config.extraIncludes.map(i -> "-I" + i));
-            args = args.concat(sources);
-            args = args.concat(["-L" + hxcppPath + "/lib"]);
-            args = args.concat(config.extraLibPaths.map(p -> "-L" + p));
-            args.push("-lhxcpp");
-            args = args.concat(config.extraLibs.map(l -> "-l" + l));
-            args = args.concat(["-o", exePath]);
+        if (!FileSystem.exists(generatedPath)) {
+            log('Warning: expected generated executable not found at $generatedPath');
+            return;
         }
 
-        Sys.putEnv("HXCPP_COMPILE_THREADS", "1");
+        if (FileSystem.exists(targetPath)) {
+            FileSystem.deleteFile(targetPath);
+        }
 
-        runCmd(compiler, args);
+        FileSystem.rename(generatedPath, targetPath);
+        log('Renamed $generatedPath -> $targetPath');
     }
-        */
+
+    static function listOutput(outDir:String) {
+        if (!FileSystem.exists(outDir)) {
+            log("Output directory does not exist.");
+            return;
+        }
+        for (f in FileSystem.readDirectory(outDir)) {
+            log(" - " + f);
+        }
+    }
 
     static function resolveCompiler(pref:String):String {
         if (pref != "auto") return pref;
