@@ -70,7 +70,7 @@ jobs:
     
       - name: Inspect generated ExtraLibs.hx
         if: matrix.os == 'macos-latest'
-        run: cat out/.stage-native/ExtraLibs.hx
+        run: cat out/.stage-native/hxcons/native/ExtraLibs.hx
     
       - name: Inspect generated Build.xml
         if: matrix.os == 'macos-latest'
