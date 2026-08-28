@@ -18,6 +18,11 @@ typedef AssetEntry = {
     embed:Bool,
 }
 
+typedef LibraryEntry = {
+    name:String,
+    version:String,
+}
+
 typedef BuildConfig = {
     var app:AppData;
     var mainClass:String;
@@ -27,6 +32,7 @@ typedef BuildConfig = {
     var extraIncludes:Array<String>;
     var extraLibPaths:Array<String>;
     var extraLibs:Array<String>;
+    var libraries:Array<LibraryEntry>;
     var compiler:String;
     var debug:Bool;
     var defines:Array<String>;
@@ -57,12 +63,29 @@ class Build {
     
     static function stageBuild(config:BuildConfig)
     {
+        var stageDir = "out/.stage-native";
+        FileSystem.createDirectory(stageDir);
+        var hasExtraLibs = generateExtraLibsXml(config, stageDir);
+
         var hxArgs:Array<String> = [];
 
-        for (dir in config.sourceDirs)
-        {
+        for (dir in config.sourceDirs) {
             hxArgs.push("-cp");
             hxArgs.push(dir);
+        }
+
+        if (hasExtraLibs)
+        {
+            hxArgs.push("-cp");
+            hxArgs.push(stageDir);
+            hxArgs.push("--macro");
+            hxArgs.push("include('ExtraLibs')");
+        }
+
+        for (lib in config.libraries)
+        {
+            hxArgs.push("-lib");
+            hxArgs.push(lib.version != null ? '${lib.name}:${lib.version}' : lib.name);
         }
 
         for (asset in config.assets)
@@ -217,6 +240,29 @@ class Build {
         if (dir == "" || FileSystem.exists(dir)) return;
         ensureDir(haxe.io.Path.directory(dir));
         FileSystem.createDirectory(dir);
+    }
+
+    static function generateExtraLibsXml(config:BuildConfig, stageDir:String):Bool
+    {
+        if (config.extraIncludes.length == 0 &&
+            config.extraLibPaths.length == 0 &&
+            config.extraLibs.length == 0) return false;
+
+        var buf = new StringBuf();
+        buf.add("<xml>\n");
+        for (inc in config.extraIncludes) buf.add('   <include name="$inc"/>\n');
+        for (lp in config.extraLibPaths) buf.add('   <libpath name="$lp"/>\n');
+        for (lib in config.extraLibs) buf.add('   <lib name="-l$lib" unless="windows"/>\n');
+        for (lib in config.extraLibs) buf.add('   <lib name="$lib.lib" if="windows"/>\n');
+        buf.add("</xml>");
+
+        var xml = buf.toString();
+        // Haxeソース文字列リテラル内でエスケープが必要な文字を処理
+        var escaped = xml.replace("\\", "\\\\").replace("'", "\\'");
+
+        var content = 'package;\n\n@:buildXml(\'$escaped\')\nextern class ExtraLibs {}\n';
+        sys.io.File.saveContent(stageDir + "/ExtraLibs.hx", content);
+        return true;
     }
 
     static function runCmd(cmd:String, args:Array<String>):String

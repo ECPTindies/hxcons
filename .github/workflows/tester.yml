@@ -1,0 +1,85 @@
+name: "[Build] Sample test"
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact-name: windows
+          - os: ubuntu-latest
+            artifact-name: linux
+          - os: macos-latest
+            artifact-name: macos
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v7.0.1
+
+      - name: Setup Haxe
+        uses: krdlab/setup-haxe@v2.1.0
+        with:
+          haxe-version: 4.3.7
+
+      - name: Install hxcpp
+        run: haxelib install hxcpp --quiet
+
+      # Windowsのみ、MSVCのcl.exeをPATHに通す
+      - name: Setup MSVC (Windows only)
+        if: matrix.os == 'windows-latest'
+        uses: ilammy/msvc-dev-cmd@v1.13.0
+
+      - name: Setup SDL2 (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: |
+          curl -fsSL -o sdl2.zip https://github.com/libsdl-org/SDL/releases/download/release-2.30.0/SDL2-devel-2.30.0-VC.zip
+          unzip -q sdl2.zip
+          echo "SDL2_INCLUDE=$(pwd)/SDL2-2.30.0/include" >> $GITHUB_ENV
+          echo "SDL2_LIBPATH=$(pwd)/SDL2-2.30.0/lib/x64" >> $GITHUB_ENV
+          echo "SDL2_DLL=$(pwd)/SDL2-2.30.0/lib/x64/SDL2.dll" >> $GITHUB_ENV
+
+      - name: Setup SDL2 (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y libsdl2-dev
+          echo "SDL2_INCLUDE=/usr/include/SDL2" >> $GITHUB_ENV
+          echo "SDL2_LIBPATH=/usr/lib/x86_64-linux-gnu" >> $GITHUB_ENV
+
+      - name: Setup SDL2 (macOS)
+        if: matrix.os == 'macos-latest'
+        run: |
+          brew install sdl2
+          echo "SDL2_INCLUDE=$(brew --prefix sdl2)/include/SDL2" >> $GITHUB_ENV
+          echo "SDL2_LIBPATH=$(brew --prefix sdl2)/lib" >> $GITHUB_ENV
+
+      - name: Compile build tool itself
+        run: haxe build.hxml
+
+      - name: Run HConstruct build
+        run: |
+          ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }} samples/.HConstruct
+
+      # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
+      - name: Copy SDL2.dll next to exe (Windows)
+        if: matrix.os == 'windows-latest'
+        shell: bash
+        run: cp "$SDL2_DLL" out/
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-${{ matrix.artifact-name }}
+          path: |
+            out/MyApp
+            out/MyApp.exe
+            out/SDL2.dll
+          if-no-files-found: ignore

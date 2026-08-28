@@ -7,6 +7,11 @@ typedef AddAssetsParam = {
     ?embed:Bool
 }
 
+typedef LibraryEntry = {
+    name:String,
+    ?version:String,
+}
+
 class HConstruct
 {
     public var applyVersion:String = "";
@@ -19,6 +24,8 @@ class HConstruct
     public var debug:Bool = false;
     public var compiler:String = "auto";
     public var defines:Array<String> = [];
+
+    public var libraries:Array<LibraryEntry> = [];
 
     public var extraIncludes:Array<String> = [];
     public var extraLibPaths:Array<String> = [];
@@ -35,6 +42,7 @@ class HConstruct
             sourceDirs: sourceDirs,
             outDir: exportDir,
             exeName: applyTitle,
+            libraries: libraries,
             extraIncludes: extraIncludes,
             extraLibPaths: extraLibPaths,
             extraLibs: extraLibs,
@@ -72,5 +80,10 @@ class HConstruct
     public function addAssetDirs(list:Array<AddAssetsParam>):Void
     {
         for (asset in list) addAsset(asset);
+    }
+
+    public function addLibrary(name:String, ?version:String):Void
+    {
+        libraries.push({ name: name, version: version });
     }
 }

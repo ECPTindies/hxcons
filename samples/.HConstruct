@@ -4,31 +4,20 @@ class ExampleProject extends HConstruct
     {
         super();
 
-        /**
-         * Apply Title
-         * ex: [MyApp.exe]
-         */
         setApplyTitle("MyApp");
-
-        /**
-         * Apply Version
-         */
         setApplyVersion("0.1.0");
-
-        setSrcMainClass("samples.src.Main");
+        setSrcMainClass("Main");
         addSourceDir("src");
-        addSourceDir("shared"); // 複数フォルダのテスト用
+        addSourceDir("shared");
 
-        addAsset({ path: "assets", rename: null, include: ["*"], embed: true });
-
-        setExportDir("out");
-        setCompiler("auto");
         setDebug(true);
-
-        //addInclude("extra/include");
-        //addLibPath("third_party/sdl2/lib");
-        //addLib("SDL2");
-
         addDefine("MY_FEATURE");
+
+        var sdlInclude = Sys.getEnv("SDL2_INCLUDE");
+        var sdlLibPath = Sys.getEnv("SDL2_LIBPATH");
+
+        if (sdlInclude != null) addInclude(sdlInclude);
+        if (sdlLibPath != null) addLibPath(sdlLibPath);
+        addLib("SDL2");
     }
 }
