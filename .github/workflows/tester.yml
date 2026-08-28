@@ -63,7 +63,7 @@ jobs:
 
       - name: Run HConstruct build
         run: |
-          ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }} samples/.HConstruct
+          ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }} samples/.HxConstruct
 
       # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
       - name: Copy SDL2.dll next to exe (Windows)
