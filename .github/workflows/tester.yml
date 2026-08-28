@@ -85,7 +85,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myapp-${{ matrix.artifact-name }}
+          name: SDL-window-sample-${{ matrix.artifact-name }}
           path: |
             out/MyApp
             out/MyApp.exe
