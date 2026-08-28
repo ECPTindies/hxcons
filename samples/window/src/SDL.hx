@@ -1,6 +1,8 @@
 package samples.window.src;
 
+
 @:include("SDL.h")
+@:native("SDL_Window")
 extern class SDLWindow {}
 
 @:include("SDL.h")
