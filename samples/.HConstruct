@@ -6,7 +6,7 @@ class ExampleProject extends HConstruct
 
         setApplyTitle("MyApp");
         setApplyVersion("0.1.0");
-        setSrcMainClass("sample.src.Main");
+        setSrcMainClass("samples.src.Main");
         addSourceDir("src");
         addSourceDir("shared");
 
