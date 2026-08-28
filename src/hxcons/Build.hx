@@ -86,7 +86,7 @@ class Build {
             hxArgs.push("-cp");
             hxArgs.push(stageDir);
             hxArgs.push("--macro");
-            hxArgs.push("include('ExtraLibs')");
+            hxArgs.push("include('hxcons.native')");
         }
 
         for (lib in config.libraries)
