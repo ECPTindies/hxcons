@@ -6,7 +6,7 @@ class ExampleProject extends HxConstruct
 
         setApplyTitle("MyApp");
         setApplyVersion("0.1.0");
-        setSrcMainClass("samples.src.Main");
+        setSrcMainClass("samples.window.src.Main");
         addSourceDir("src");
         addSourceDir("shared");
 

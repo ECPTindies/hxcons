@@ -1,4 +1,4 @@
-package samples.shared;
+package samples.window.shared;
 
 class Helper
 {

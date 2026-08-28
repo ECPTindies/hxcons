@@ -1,6 +1,6 @@
-package samples.src;
+package samples.window.src;
 
-import samples.shared.Helper;
+import samples.window.shared.Helper;
 
 class Main
 {
