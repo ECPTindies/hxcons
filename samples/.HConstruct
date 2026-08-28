@@ -25,9 +25,9 @@ class ExampleProject extends HConstruct
         setCompiler("auto");
         setDebug(true);
 
-        addInclude("extra/include");
-        addLibPath("third_party/sdl2/lib");
-        addLib("SDL2");
+        //addInclude("extra/include");
+        //addLibPath("third_party/sdl2/lib");
+        //addLib("SDL2");
 
         addDefine("MY_FEATURE");
     }
