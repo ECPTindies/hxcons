@@ -12,6 +12,6 @@ class Main
         trace("[SCons] TEST CODE - shared");
         trace(Helper.greet());
 
-        var data = haxe.Resource.getBytes("images/icon.png");
+        var data = haxe.Resource.getBytes("assets/icon.png");
     }
 }
