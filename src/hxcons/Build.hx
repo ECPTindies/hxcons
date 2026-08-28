@@ -257,7 +257,17 @@ class Build {
 
         var buf = new StringBuf();
         buf.add("<xml>\n");
-        for (inc in config.extraIncludes) buf.add('   <includepath name="$inc"/>\n');
+
+        // includeパスは "haxe" idのfilesグループにマージすることで、
+        // 実際のコンパイルコマンドに反映させる
+        if (config.extraIncludes.length > 0) {
+            buf.add('   <files id="haxe">\n');
+            for (inc in config.extraIncludes) {
+                buf.add('      <compilerflag value="-I$inc"/>\n');
+            }
+            buf.add('   </files>\n');
+        }
+
         for (lp in config.extraLibPaths) buf.add('   <libpath name="$lp"/>\n');
         for (lib in config.extraLibs) buf.add('   <lib name="-l$lib" unless="windows"/>\n');
         for (lib in config.extraLibs) buf.add('   <lib name="$lib.lib" if="windows"/>\n');
@@ -266,7 +276,6 @@ class Build {
         var xml = buf.toString();
         var escaped = xml.split("\\").join("\\\\").split("'").join("\\'");
 
-        // 名前付きパッケージに配置(Compiler.includeがパッケージ名でしか検索できないため)
         var nativeDir = stageDir + "/hxcons/native";
         FileSystem.createDirectory(nativeDir);
 
