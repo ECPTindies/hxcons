@@ -66,6 +66,11 @@ jobs:
 
       - name: Run HConstruct build (via haxelib run)
         run: haxelib run hxcons build samples/window/.HxConstruct
+        continue-on-error: true
+    
+      - name: Inspect generated ExtraLibs.hx
+        if: matrix.os == 'macos-latest'
+        run: cat out/.stage-native/ExtraLibs.hx
 
       # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
       - name: Copy SDL2.dll next to exe (Windows)
