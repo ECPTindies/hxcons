@@ -264,10 +264,10 @@ class Build {
         buf.add("</xml>");
 
         var xml = buf.toString();
-        // Haxeソース文字列リテラル内でエスケープが必要な文字を処理
-        var escaped = xml.replace("\\", "\\\\").replace("'", "\\'");
+        var escaped = xml.split("\\").join("\\\\").split("'").join("\\'");
 
-        var content = 'package;\n\n@:buildXml(\'$escaped\')\nextern class ExtraLibs {}\n';
+        var content = 'package;\n\n@:keep\n@:buildXml(\'$escaped\')\nextern class ExtraLibs {}\n';
+        FileSystem.createDirectory(stageDir);
         sys.io.File.saveContent(stageDir + "/ExtraLibs.hx", content);
         return true;
     }
