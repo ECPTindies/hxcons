@@ -5,17 +5,7 @@ on:
 
 jobs:
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: windows-latest
-            artifact-name: windows
-          - os: ubuntu-latest
-            artifact-name: linux
-          - os: macos-latest
-            artifact-name: macos
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v7.0.1
