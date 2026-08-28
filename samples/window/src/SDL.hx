@@ -1,6 +1,9 @@
 package samples.window.src;
 
 @:include("SDL.h")
+extern class SDLWindow {}
+
+@:include("SDL.h")
 extern class SDL
 {
     @:native("SDL_Init")
@@ -13,10 +16,10 @@ extern class SDL
     public static function getError():cpp.ConstCharStar;
 
     @:native("SDL_CreateWindow")
-    public static function createWindow(title:cpp.ConstCharStar, x:Int, y:Int, w:Int, h:Int, flags:Int):cpp.RawPointer<cpp.Void>;
+    public static function createWindow(title:cpp.ConstCharStar, x:Int, y:Int, w:Int, h:Int, flags:Int):cpp.RawPointer<SDLWindow>;
 
     @:native("SDL_DestroyWindow")
-    public static function destroyWindow(window:cpp.RawPointer<cpp.Void>):Void;
+    public static function destroyWindow(window:cpp.RawPointer<SDLWindow>):Void;
 
     @:native("SDL_Delay")
     public static function delay(ms:Int):Void;
