@@ -16,9 +16,6 @@ class ExampleProject extends HxConstruct
         var sdlInclude = Sys.getEnv("SDL2_INCLUDE");
         var sdlLibPath = Sys.getEnv("SDL2_LIBPATH");
 
-        Sys.println("[DEBUG] SDL2_INCLUDE=" + sdlInclude);
-        Sys.println("[DEBUG] SDL2_LIBPATH=" + sdlLibPath);
-
         if (sdlInclude != null) addInclude(sdlInclude);
         if (sdlLibPath != null) addLibPath(sdlLibPath);
         addLib("SDL2");

@@ -44,12 +44,7 @@ class ProjectLoader {
 
         if (code != 0) throw 'Failed to evaluate $hxconstructPath:\n$err';
 
-        var data:Dynamic;
-        try {
-            data = haxe.Json.parse(out);
-        } catch (e:Dynamic) {
-            throw 'Failed to parse JSON output from $hxconstructPath.\nRaw output was:\n---\n$out\n---\nError: $e';
-        }
+        var data:Dynamic = haxe.Json.parse(out);
 
         resolveRelativePaths(data, hxconstructPath);
 
