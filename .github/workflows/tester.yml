@@ -37,11 +37,11 @@ jobs:
         if: matrix.os == 'windows-latest'
         shell: bash
         run: |
-          curl -fsSL -o sdl2.zip https://github.com/libsdl-org/SDL/releases/download/release-2.30.0/SDL2-devel-2.30.0-VC.zip
-          unzip -q sdl2.zip
-          echo "SDL2_INCLUDE=$(pwd)/SDL2-2.30.0/include" >> $GITHUB_ENV
-          echo "SDL2_LIBPATH=$(pwd)/SDL2-2.30.0/lib/x64" >> $GITHUB_ENV
-          echo "SDL2_DLL=$(pwd)/SDL2-2.30.0/lib/x64/SDL2.dll" >> $GITHUB_ENV
+            curl -fsSL -o sdl2.zip https://github.com/libsdl-org/SDL/releases/download/release-2.30.0/SDL2-devel-2.30.0-VC.zip
+            unzip -q sdl2.zip
+            echo "SDL2_INCLUDE=$(cygpath -w "$(pwd)/SDL2-2.30.0/include")" >> $GITHUB_ENV
+            echo "SDL2_LIBPATH=$(cygpath -w "$(pwd)/SDL2-2.30.0/lib/x64")" >> $GITHUB_ENV
+            echo "SDL2_DLL=$(cygpath -w "$(pwd)/SDL2-2.30.0/lib/x64/SDL2.dll")" >> $GITHUB_ENV
 
       - name: Setup SDL2 (Linux)
         if: matrix.os == 'ubuntu-latest'
