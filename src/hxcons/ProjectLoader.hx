@@ -3,13 +3,13 @@ package hxcons;
 using StringTools;
 
 class ProjectLoader {
-    public static function load(hconstructPath:String):Dynamic
+    public static function load(hxconstructPath:String):Dynamic
     {
-        var content = sys.io.File.getContent(hconstructPath);
+        var content = sys.io.File.getContent(hxconstructPath);
 
-        var classNameRe = ~/class\s+(\w+)\s+extends\s+HConstruct/;
+        var classNameRe = ~/class\s+(\w+)\s+extends\s+HxConstruct/;
         if (!classNameRe.match(content))
-            throw 'HConstruct class not found in $hconstructPath';
+            throw 'HxConstruct class not found in $hxconstructPath';
         var className = classNameRe.matched(1);
 
         var packageRe = ~/^\s*package\s+([\w.]+)\s*;/m;
@@ -22,12 +22,12 @@ class ProjectLoader {
 
         content = stripPackageDecl(content);
 
-        // .HConstruct -> .hx (中身はそのまま)
+        // .HxConstruct -> .hx (中身はそのまま)
         sys.io.File.saveContent(targetDir + "/" + className + ".hx", content);
 
         // ベースクラスも同じclasspathに配置(packageを剥がしてルート直下用に変換)
-        var hconstructSrc = sys.io.File.getContent("src/hxcons/HConstruct.hx");
-        sys.io.File.saveContent(stageDir + "/HConstruct.hx", stripPackageDecl(hconstructSrc));
+        var hxconstructSrc = sys.io.File.getContent("src/hxcons/HxConstruct.hx");
+        sys.io.File.saveContent(stageDir + "/HxConstruct.hx", stripPackageDecl(hxconstructSrc));
 
         // Runnerをクラス名で置換して生成
         var runnerSrc = sys.io.File.getContent("src/hxcons/Runner.hx.template")
@@ -42,11 +42,11 @@ class ProjectLoader {
         var code = p.exitCode();
         p.close();
 
-        if (code != 0) throw 'Failed to evaluate $hconstructPath:\n$err';
+        if (code != 0) throw 'Failed to evaluate $hxconstructPath:\n$err';
 
         var data:Dynamic = haxe.Json.parse(out);
 
-        resolveRelativePaths(data, hconstructPath);
+        resolveRelativePaths(data, hxconstructPath);
 
         return data;
     }
@@ -58,14 +58,14 @@ class ProjectLoader {
     }
 
     /**
-     * sourceDirsとassets[].pathを、.HConstructファイルの場所を基準にした相対パスに解決する。
+     * sourceDirsとassets[].pathを、.HxConstructファイルの場所を基準にした相対パスに解決する。
      * outDirはリポジトリルート(実行時カレントディレクトリ)基準のまま変更しない。
      */
-    static function resolveRelativePaths(data:Dynamic, hconstructPath:String):Void
+    static function resolveRelativePaths(data:Dynamic, hxconstructPath:String):Void
     {
-        var baseDir = haxe.io.Path.directory(hconstructPath);
+        var baseDir = haxe.io.Path.directory(hxconstructPath);
 
-        // .HConstructがルート直下にある場合、directory()は "" を返す -> 解決不要
+        // .HxConstructがルート直下にある場合、directory()は "" を返す -> 解決不要
         if (baseDir == "") return;
 
         function resolve(p:String):String

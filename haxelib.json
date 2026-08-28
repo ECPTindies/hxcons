@@ -3,5 +3,13 @@
     "url": "https://github.com/ECPTindies/hxcons",
     "license": "MIT",
     "tags": [],
-    "description": ""
+    "description": "A build tool that compiles project through .hx -> .cpp -> .exe using hxcpp.",
+    "version": "1.0.0",
+    "classPath": "src/",
+    "releasenote": "Initial release.",
+    "contributors": ["Youba"],
+    "dependencies": {
+        "hxcpp": ""
+    },
+    "main": "hxcons.Main"
 }

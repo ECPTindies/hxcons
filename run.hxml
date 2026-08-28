@@ -1,0 +1,4 @@
+# run.hxml
+-cp src
+-main hxcons.Run
+-neko run.n

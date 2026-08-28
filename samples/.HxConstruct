@@ -1,4 +1,4 @@
-class ExampleProject extends HConstruct
+class ExampleProject extends HxConstruct
 {
     public function new()
     {

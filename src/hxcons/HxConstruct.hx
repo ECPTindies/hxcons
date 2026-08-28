@@ -12,7 +12,7 @@ typedef LibraryEntry = {
     ?version:String,
 }
 
-class HConstruct
+class HxConstruct
 {
     public var applyVersion:String = "";
     public var applyTitle:String = "";
