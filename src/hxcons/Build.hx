@@ -263,14 +263,9 @@ class Build {
             buf.add('</files>\n');
         }
 
-        for (lp in config.extraLibPaths) buf.add('<libpath name="$lp"/>\n');
-
-        if (config.extraLibs.length > 0) {
-            buf.add('<target id="haxe">\n');
-            for (lib in config.extraLibs) buf.add('   <lib name="-l$lib" unless="windows"/>\n');
-            for (lib in config.extraLibs) buf.add('   <lib name="$lib.lib" if="windows"/>\n');
-            buf.add('</target>\n');
-        }
+        for (lp in config.extraLibPaths) buf.add('<compilerflag value="-L$lp" tag="haxe,static"/>\n');
+        for (lib in config.extraLibs) buf.add('<lib name="-l$lib" unless="windows"/>\n');
+        for (lib in config.extraLibs) buf.add('<lib name="$lib.lib" if="windows"/>\n');
 
         var xml = buf.toString();
         var escaped = xml.split("\\").join("\\\\").split("'").join("\\'");
