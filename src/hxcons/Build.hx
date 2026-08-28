@@ -266,9 +266,12 @@ class Build {
         var xml = buf.toString();
         var escaped = xml.split("\\").join("\\\\").split("'").join("\\'");
 
-        var content = 'package;\n\n@:keep\n@:buildXml(\'$escaped\')\nextern class ExtraLibs {}\n';
-        FileSystem.createDirectory(stageDir);
-        sys.io.File.saveContent(stageDir + "/ExtraLibs.hx", content);
+        // 名前付きパッケージに配置(Compiler.includeがパッケージ名でしか検索できないため)
+        var nativeDir = stageDir + "/hxcons/native";
+        FileSystem.createDirectory(nativeDir);
+
+        var content = 'package hxcons.native;\n\n@:keep\n@:buildXml(\'$escaped\')\nextern class ExtraLibs {}\n';
+        sys.io.File.saveContent(nativeDir + "/ExtraLibs.hx", content);
         return true;
     }
 
