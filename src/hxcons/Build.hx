@@ -40,12 +40,11 @@ typedef BuildConfig = {
 }
 
 class Build {
-    public static function main()
+    
+    // haxelib run hxcons build から呼ばれるエントリポイント
+    public static function run(hconstructPath:String)
     {
-        var args = Sys.args();
-        var hxconstructPath = args.length > 0 ? args[0] : ".HxConstruct";
-
-        var config:BuildConfig = cast ProjectLoader.load(hxconstructPath);
+        var config:BuildConfig = cast ProjectLoader.load(hconstructPath);
 
         log('=== Project: ${config.app.title} v${config.app.version} ===');
 
@@ -59,6 +58,14 @@ class Build {
 
         log('Done. Listing output directory: ${config.outDir}');
         listOutput(config.outDir);
+    }
+
+    // 単体で `-main Build` として直接コンパイル/実行したい場合用(デバッグ・検証時のみ)
+    static function main()
+    {
+        var args = Sys.args();
+        var hconstructPath = args.length > 0 ? args[0] : ".HxConstruct";
+        run(hconstructPath);
     }
     
     static function stageBuild(config:BuildConfig)

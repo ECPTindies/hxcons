@@ -2,7 +2,7 @@
     "name": "hxcons",
     "url": "https://github.com/ECPTindies/hxcons",
     "license": "MIT",
-    "tags": [],
+    "tags": ["build", "cpp", "hxcpp", "tool"],
     "description": "A build tool that compiles project through .hx -> .cpp -> .exe using hxcpp.",
     "version": "1.0.0",
     "classPath": "src/",
@@ -10,6 +10,5 @@
     "contributors": ["Youba"],
     "dependencies": {
         "hxcpp": ""
-    },
-    "main": "hxcons.Main"
+    }
 }
