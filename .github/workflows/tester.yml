@@ -71,6 +71,10 @@ jobs:
       - name: Inspect generated ExtraLibs.hx
         if: matrix.os == 'macos-latest'
         run: cat out/.stage-native/ExtraLibs.hx
+    
+      - name: Inspect generated Build.xml
+        if: matrix.os == 'macos-latest'
+        run: cat out/Build.xml
 
       # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
       - name: Copy SDL2.dll next to exe (Windows)
