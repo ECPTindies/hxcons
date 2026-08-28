@@ -65,7 +65,7 @@ jobs:
         run: haxelib dev hxcons .
 
       - name: Run HConstruct build (via haxelib run)
-        run: haxelib run hxcons build samples/.HConstruct
+        run: haxelib run hxcons build samples/window/.HConstruct
 
       # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
       - name: Copy SDL2.dll next to exe (Windows)
