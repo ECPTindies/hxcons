@@ -15,6 +15,7 @@ For example, we'll name the folder `MyProject`.
 ├── 📁assets/
 │   ├── 📁images/
 │   │   └── icon.png
+├── 📁resource/
 │   └── my-data.json
 └── 📁src/
     └── Main.hx
@@ -36,6 +37,9 @@ class MyProject extends HxConstruct
         setSrcMainClass("samples.src.Main");
         addSourceDir("src");
         addSourceDir("shared");
+
+        addAsset({ path: "assets", rename: null, include: ["*"], embed: true });
+        addAsset({ path: "assets" }); // rename: null, include: ["*"], embed: false
 
         setDebug(true);
         addDefine("MY_FEATURE");
