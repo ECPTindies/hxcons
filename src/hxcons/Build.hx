@@ -257,7 +257,7 @@ class Build {
 
         var buf = new StringBuf();
         buf.add("<xml>\n");
-        for (inc in config.extraIncludes) buf.add('   <include name="$inc"/>\n');
+        for (inc in config.extraIncludes) buf.add('   <includepath name="$inc"/>\n');
         for (lp in config.extraLibPaths) buf.add('   <libpath name="$lp"/>\n');
         for (lib in config.extraLibs) buf.add('   <lib name="-l$lib" unless="windows"/>\n');
         for (lib in config.extraLibs) buf.add('   <lib name="$lib.lib" if="windows"/>\n');
