@@ -4,12 +4,22 @@ class ExampleProject extends HConstruct
     {
         super();
 
+        /**
+         * Apply Title
+         * ex: [MyApp.exe]
+         */
         setApplyTitle("MyApp");
+
+        /**
+         * Apply Version
+         */
         setApplyVersion("0.1.0");
 
         setSrcMainClass("samples.src.Main");
         addSourceDir("src");
         addSourceDir("shared"); // 複数フォルダのテスト用
+
+        addAsset({ path: "assets", rename: null, include: ["*"], embed: true });
 
         setExportDir("out");
         setCompiler("auto");

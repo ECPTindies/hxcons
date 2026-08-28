@@ -11,7 +11,7 @@ class HConstruct
 {
     public var applyVersion:String = "";
     public var applyTitle:String = "";
-    public var applyMeta:haxe.DynamicAccess<Dynamic> = {};
+    public var applyMeta:Map<String, Dynamic> = [];
 
     public var srcMainClass:String;
     public var sourceDirs:Array<String> = [];
@@ -59,16 +59,18 @@ class HConstruct
     public function addLibPath(value:String):Void extraLibPaths.push(value);
     public function addLib(value:String):Void extraLibs.push(value);
 
+    public function addAsset(asset:AddAssetsParam):Void
+    {
+        assets.push({
+            path: asset.path,
+            rename: asset.rename != null ? asset.rename : "",
+            include: (asset.include != null && asset.include.length > 0) ? asset.include : ["*"],
+            embed: asset.embed != null ? asset.embed : false,
+        });
+    }
+
     public function addAssetDirs(list:Array<AddAssetsParam>):Void
     {
-        for (asset in list)
-        {
-            assets.push({
-                path: asset.path,
-                rename: asset.rename != null ? asset.rename : "",
-                include: asset.include != null ? asset.include : [],
-                embed: asset.embed != null ? asset.embed : false,
-            });
-        }
+        for (asset in list) addAsset(asset);
     }
 }
