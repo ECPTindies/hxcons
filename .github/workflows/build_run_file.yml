@@ -22,5 +22,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: runfile
-          path: out/run.n
+          path: run.n
           if-no-files-found: ignore
