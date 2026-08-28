@@ -58,14 +58,14 @@ jobs:
           echo "SDL2_INCLUDE=$(brew --prefix sdl2)/include/SDL2" >> $GITHUB_ENV
           echo "SDL2_LIBPATH=$(brew --prefix sdl2)/lib" >> $GITHUB_ENV
 
-      - name: Compile build tool
+      - name: Compile run.n (haxelib entry)
         run: haxe run.hxml
 
-      - name: Run HConstruct build
-        run: |
-            haxelib dev hxcons .
-            ${{ matrix.os == 'windows-latest' && '.\bin\Build.exe' || './bin/Build' }}
-            haxelib run hxcons build samples/window/.HxConstruct
+      - name: Register hxcons as a local haxelib dev library
+        run: haxelib dev hxcons .
+
+      - name: Run HConstruct build (via haxelib run)
+        run: haxelib run hxcons build samples/.HConstruct
 
       # Windowsのみ、実行時にDLLが必要なのでexeと同じ場所へコピー
       - name: Copy SDL2.dll next to exe (Windows)
