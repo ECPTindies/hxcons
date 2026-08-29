@@ -68,7 +68,7 @@ jobs:
 
       - name: Run HConstruct build (via haxelib run)
         run: haxelib run hxcons build samples/window/.HxConstruct
-        continue-on-error: true
+        #continue-on-error: true
     
       - name: Inspect generated ExtraLibs.hx
         if: matrix.os == 'macos-latest'
@@ -82,7 +82,7 @@ jobs:
       - name: Copy SDL2.dll next to exe (Windows)
         if: matrix.os == 'windows-latest'
         shell: bash
-        run: cp "$SDL2_DLL" out/
+        run: cp "$SDL2_DLL" out/dist/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
