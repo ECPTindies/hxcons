@@ -89,8 +89,5 @@ jobs:
         with:
           name: SDL-window-sample-${{ matrix.artifact-name }}
           path: |
-            out/MyApp
-            out/MyApp.exe
-            out/SDL2.dll
-            out/assets
+            out/dist/
           if-no-files-found: ignore

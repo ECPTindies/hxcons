@@ -159,9 +159,13 @@ class Build {
         return result;
     }
 
+    static function distDir(config:BuildConfig):String
+    {
+        return config.outDir + "/dist";
+    }
+
     static function renameOutput(config:BuildConfig)
     {
-        // mainClassの最後のドット以降(パッケージを除いたクラス名)を取得
         var parts = config.mainClass.split(".");
         var baseName = parts[parts.length - 1];
 
@@ -171,7 +175,10 @@ class Build {
 
         var generatedName = baseName + debugSuffix;
         var generatedPath = config.outDir + "/" + generatedName + ext;
-        var targetPath = config.outDir + "/" + config.exeName + ext;
+
+        var dist = distDir(config);
+        FileSystem.createDirectory(dist);
+        var targetPath = dist + "/" + config.exeName + ext;
 
         if (!FileSystem.exists(generatedPath))
         {
@@ -224,6 +231,8 @@ class Build {
 
     static function copyAssets(config:BuildConfig)
     {
+        var dist = distDir(config);
+
         for (asset in config.assets)
         {
             if (asset.embed) continue;
@@ -232,14 +241,14 @@ class Build {
                 var files = collectFiles(asset.path, asset.include);
                 for (src in files) {
                     var relName = resolveAssetName(asset, src);
-                    var dest = config.outDir + "/assets/" + relName;
+                    var dest = dist + "/assets/" + relName;
                     ensureDir(haxe.io.Path.directory(dest));
                     sys.io.File.copy(src, dest);
                     log('Copied asset: $src -> $dest');
                 }
             } else {
                 var relName = resolveAssetName(asset, asset.path);
-                var dest = config.outDir + "/assets/" + relName;
+                var dest = dist + "/assets/" + relName;
                 ensureDir(haxe.io.Path.directory(dest));
                 sys.io.File.copy(asset.path, dest);
                 log('Copied asset: ${asset.path} -> $dest');
