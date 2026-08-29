@@ -92,4 +92,5 @@ jobs:
             out/MyApp
             out/MyApp.exe
             out/SDL2.dll
+            out/assets
           if-no-files-found: ignore
