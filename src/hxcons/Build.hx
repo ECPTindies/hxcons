@@ -117,8 +117,10 @@ class Build {
         hxArgs.push("-main"); hxArgs.push(config.mainClass);
         hxArgs.push("-cpp"); hxArgs.push(config.outDir);
 
-        // 64bitビルドを明示(特にWindowsはこれが無いとデフォルトでx86になる)
-        hxArgs.push("-D"); hxArgs.push("HXCPP_M64");
+        
+        if (Sys.systemName() == "Windows") {
+            hxArgs.push("-D"); hxArgs.push("HXCPP_M64");
+        }
 
         for (d in config.defines) { hxArgs.push("-D"); hxArgs.push(d); }
         if (config.debug) hxArgs.push("-debug");

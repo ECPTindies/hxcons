@@ -1,6 +1,6 @@
 package samples.window.src;
 
-
+@:buildXml('<files id="haxe"><compilerflag value="-DSDL_MAIN_HANDLED"/></files>')
 @:include("SDL.h")
 @:native("SDL_Window")
 extern class SDLWindow {}
