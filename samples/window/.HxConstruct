@@ -10,6 +10,8 @@ class ExampleProject extends HxConstruct
         addSourceDir("src");
         addSourceDir("shared");
 
+        addAssets({ path: "assets" });
+
         setDebug(true);
         addDefine("MY_FEATURE");
 
