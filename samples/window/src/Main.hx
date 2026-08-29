@@ -22,7 +22,7 @@ class Main
             "hxcons SDL2 Test",
             SDLFlags.WINDOWPOS_CENTERED,
             SDLFlags.WINDOWPOS_CENTERED,
-            640, 480,
+            1280, 720,
             SDLFlags.WINDOW_SHOWN
         );
 
