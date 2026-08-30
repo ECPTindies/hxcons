@@ -42,6 +42,7 @@ typedef BuildConfig = {
     var debug:Bool;
     var defines:Array<DefineEntry>;
     var assets:Array<AssetEntry>;
+    var showConsole:Bool;
 }
 
 class Build {
@@ -133,6 +134,13 @@ class Build {
             hxArgs.push("-D");
             hxArgs.push(d.value != null ? '${d.id}=${d.value}' : d.id);
         }
+
+        if (!config.showConsole)
+        {
+            hxArgs.push("-D");
+            hxArgs.push("no_console");
+        }
+
         if (config.debug) hxArgs.push("-debug");
 
         runCmd("haxe", hxArgs);

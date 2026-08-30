@@ -42,8 +42,9 @@ class HxConstruct
 
     public var assets:Array<AddAssetsParam> = [];
 
-    // フィールド宣言部分
     public var defines:Array<DefineEntry> = [];
+
+    public var showConsole:Bool = true;
 
     public function new() {}
 
@@ -64,6 +65,7 @@ class HxConstruct
             debug: debug,
             defines: defines,
             assets: assets,
+            showConsole: showConsole,
         };
     }
 
@@ -108,5 +110,10 @@ class HxConstruct
     public function setDefine(param:DefineParam):Void
     {
         defines.push({ id: param.id, value: param.value != null ? param.value : null });
+    }
+
+    public function setConsole(value:Bool):Void
+    {
+        showConsole = value;
     }
 }
