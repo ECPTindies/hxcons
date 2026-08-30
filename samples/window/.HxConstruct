@@ -12,7 +12,7 @@ class ExampleProject extends HxConstruct
 
         addAsset({ path: "assets" });
 
-        setDebug(true);
+        setDebug(false);
         setDefine({ id: "MY_FEATURE" });
         setDefine({ id: "MY_FEATURE_2", value: 2 });
         addDefine("MY_FEATURE_3");
