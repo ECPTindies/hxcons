@@ -12,6 +12,16 @@ typedef LibraryEntry = {
     ?version:String,
 }
 
+typedef DefineParam = {
+    id:String,
+    ?value:Dynamic,
+}
+
+typedef DefineEntry = {
+    id:String,
+    value:Dynamic,
+}
+
 class HxConstruct
 {
     public var applyVersion:String = "";
@@ -23,7 +33,6 @@ class HxConstruct
     public var exportDir:String = "out";
     public var debug:Bool = false;
     public var compiler:String = "auto";
-    public var defines:Array<String> = [];
 
     public var libraries:Array<LibraryEntry> = [];
 
@@ -33,10 +42,15 @@ class HxConstruct
 
     public var assets:Array<AddAssetsParam> = [];
 
+    // フィールド宣言部分
+    public var defines:Array<DefineEntry> = [];
+
     public function new() {}
 
-    public function toObject():Dynamic {
-        return {
+    public function toObject():Dynamic
+    {
+        return
+        {
             app: { title: applyTitle, version: applyVersion, meta: applyMeta },
             mainClass: srcMainClass,
             sourceDirs: sourceDirs,
@@ -62,7 +76,6 @@ class HxConstruct
     public function setExportDir(value:String):Void exportDir = value;
     public function setDebug(value:Bool):Void debug = value;
     public function setCompiler(value:String):Void compiler = value;
-    public function addDefine(value:String):Void defines.push(value);
     public function addInclude(value:String):Void extraIncludes.push(value);
     public function addLibPath(value:String):Void extraLibPaths.push(value);
     public function addLib(value:String):Void extraLibs.push(value);
@@ -85,5 +98,15 @@ class HxConstruct
     public function addLibrary(name:String, ?version:String):Void
     {
         libraries.push({ name: name, version: version });
+    }
+
+    public function addDefine(id:String):Void
+    {
+        defines.push({ id: id, value: null });
+    }
+
+    public function setDefine(param:DefineParam):Void
+    {
+        defines.push({ id: param.id, value: param.value != null ? param.value : null });
     }
 }

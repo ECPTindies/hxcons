@@ -23,6 +23,11 @@ typedef LibraryEntry = {
     version:String,
 }
 
+typedef DefineEntry = {
+    id:String,
+    value:Dynamic,
+}
+
 typedef BuildConfig = {
     var app:AppData;
     var mainClass:String;
@@ -35,7 +40,7 @@ typedef BuildConfig = {
     var libraries:Array<LibraryEntry>;
     var compiler:String;
     var debug:Bool;
-    var defines:Array<String>;
+    var defines:Array<DefineEntry>;
     var assets:Array<AssetEntry>;
 }
 
@@ -118,12 +123,16 @@ class Build {
         hxArgs.push("-cpp"); hxArgs.push(config.outDir);
 
         
-        if (Sys.systemName() == "Windows") {
+        if (Sys.systemName() == "Windows")
+        {
             hxArgs.push("-D"); hxArgs.push("HXCPP_M64");
         }
 
-        for (d in config.defines) { hxArgs.push("-D"); hxArgs.push(d); }
-        if (config.debug) hxArgs.push("-debug");
+        for (d in config.defines)
+        {
+            hxArgs.push("-D");
+            hxArgs.push(d.value != null ? '${d.id}=${d.value}' : d.id);
+        }
 
         runCmd("haxe", hxArgs);
     }

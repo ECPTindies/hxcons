@@ -13,7 +13,7 @@ class ExampleProject extends HxConstruct
         addAsset({ path: "assets" });
 
         setDebug(true);
-        addDefine("MY_FEATURE");
+        setDefine({ id: "MY_FEATURE" });
 
         var sdlInclude = Sys.getEnv("SDL2_INCLUDE");
         var sdlLibPath = Sys.getEnv("SDL2_LIBPATH");
