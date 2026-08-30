@@ -133,6 +133,7 @@ class Build {
             hxArgs.push("-D");
             hxArgs.push(d.value != null ? '${d.id}=${d.value}' : d.id);
         }
+        if (config.debug) hxArgs.push("-debug");
 
         runCmd("haxe", hxArgs);
     }
