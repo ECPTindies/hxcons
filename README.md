@@ -17,7 +17,7 @@ There is currently only one way to install it.
 haxelib git hxcons https://github.com/ECPTindies/hxcons.git
 ```
 
-If you installed it from Git, open a console from the hxcons root folder and build hxcons using the following command:
+If you installed it from Git, open a console from the hxcons' root folder and build hxcons using the following command:
 ```
 haxe run.hxml
 ```
