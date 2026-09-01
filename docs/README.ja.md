@@ -1,4 +1,4 @@
-- **[日本語 / Japanese](docs/README.ja.md)**
+- **[英語 / English](./README.md)**
 ___
 ___
 <img src="./docs/img/HxCons.svg" alt="[ICON] HxCons" width="300" height="300"/>
@@ -6,26 +6,29 @@ ___
 # HxCons
 ![Haxe](https://img.shields.io/badge/Haxe-EA8220?style=for-the-badge&logo=haxe&logoColor=white)
 ___
-A simple build tool that compiles haxe project using hxcpp.
+Haxeで作成したプロジェクトをhxcppライブラリを使用してビルドする簡易的なツール。
 
-## [WORNING]
-This tool does not include APIs for displaying windows and etc. functions.<br>
-You will need to implement those yourself!
+## [警告]
+このツールには、ウィンドウの表示やその他の機能のためのAPIは含まれていません。<br>
+それらは、ご自身で実装してもらう必要があります！
 
-## Installing
-There is currently only one way to install it.
+## インストール
+インストール方法は、現在一つしかありません。
+<!-- ```
+haxelib install hxcons ?<version>
+``` -->
 ```
 haxelib git hxcons https://github.com/ECPTindies/hxcons.git
 ```
 
-If you installed it from Git, open a console from the hxcons root folder and build hxcons using the following command:
+gitからインストールした場合、hxconsのルートフォルダからコンソールを開き、次のコマンドでhxconsをビルドしてください。
 ```
 haxe run.hxml
 ```
 
-## Basic Usage
-#### 1. Make your project directory.
-For example, we'll name the folder `MyProject`.
+## 基本的な使い方
+#### 1. プロジェクトの作成
+例として、ここでは`MyProject`と名付けましょう。
 ```
 📁MyProject/
 ├── 📁assets/
@@ -37,8 +40,8 @@ For example, we'll name the folder `MyProject`.
     └── Main.hx
 ```
 
-#### 2. Create a `.HxConstruct` file in root directory.
-A `.HxConstruct` file is a project configuration file written in Haxe syntax.
+#### 2. `.HxConstruct`ファイルをルートディレクトリに作成
+`.HxConstruct`は、Haxeの構文を使用したプロジェクト構成ファイルです。
 
 ```haxe
 // You can name the class whatever you like.
@@ -49,7 +52,7 @@ class MyProject extends HxConstruct
         super();
 
         setApplyTitle("MyApp");
-        setApplyVersion("0.1.0");
+        setApplyVersion("1.0.0");
         setSrcMainClass("samples.src.Main");
         addSourceDir("src");
         addSourceDir("shared");
@@ -66,7 +69,7 @@ class MyProject extends HxConstruct
 }
 ```
 
-#### 3. Install dependencies and compile the project.
+#### 3. 依存関係のあるライブラリのインストールと、プロジェクトのビルド
 With a few exceptions, you should continue to use the `haxelib install ...` command to install dependencies.
 Also, please install `hxcpp`.
 ```
