@@ -11,6 +11,10 @@ A simple build tool that compiles haxe project using hxcpp.
 This tool does not include APIs for displaying windows and etc. functions.<br>
 You will need to implement those yourself!
 
+## Samples
+- [Creating a Window using SDL](/samples/window/)
+- [GitHub Workflow](/.github/workflows/tester.yml)
+
 ## Installing
 There is currently only one way to install it.
 ```
@@ -74,9 +78,10 @@ haxelib install json5hx 1.0.2
 haxelib install hxcpp --quiet
 ```
 
-Now all you have to do is compile it! To compile the project, just type `.HxConstruct` in root directory.
+Now all you have to do is compile! To build the project, open a console window in the root directory and enter the following:
 ```
 haxelib run hxcons .HxConstruct
 ```
 
 That's it—the project build is now complete!
+

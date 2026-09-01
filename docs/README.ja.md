@@ -25,6 +25,10 @@ gitからインストールした場合、hxconsのルートフォルダから�
 haxe run.hxml
 ```
 
+## サンプル
+- [SDLを使用したウィンドウの作成](/samples/window/)
+- [GitHub Workflowの例](/.github/workflows/tester.yml)
+
 ## 基本的な使い方
 #### 1. プロジェクトの作成
 例として、ここでは`MyProject`と名付けましょう。
@@ -69,17 +73,17 @@ class MyProject extends HxConstruct
 ```
 
 #### 3. 依存関係のあるライブラリのインストールと、プロジェクトのビルド
-With a few exceptions, you should continue to use the `haxelib install ...` command to install dependencies.
-Also, please install `hxcpp`.
+一部を除き、依存関係をインストールする際は引き続き`haxelib install ...`コマンドを使用してください。
+同時に、`hxcpp`もインストールが必要です。
 ```
+haxelib install hxcpp --quiet
 haxelib install format
 haxelib install json5hx 1.0.2
-haxelib install hxcpp --quiet
 ```
 
-Now all you have to do is compile it! To compile the project, just type `.HxConstruct` in root directory.
+あとはコンパイルするだけ！プロジェクトをビルドするには、ルートディレクトリでコンソールを開き、以下を入力してください。
 ```
 haxelib run hxcons .HxConstruct
 ```
 
-That's it—the project build is now complete!
+これで、ビルドが通ったはずです！
