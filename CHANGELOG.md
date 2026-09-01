@@ -13,7 +13,4 @@ Initial release.
 ### Changed
 - None.
 
-<!--### Known Issues
-- None.-->
-
 ## [Unreleased]
