@@ -1,8 +1,7 @@
 - **[日本語 / Japanese](docs/README.ja.md)**
 ___
 ___
-<img src="./docs/img/HxCons.svg" alt="[ICON] HxCons" width="300" height="300"/>
-
+![HxCons](/docs/img/HxCons.svg)
 # HxCons
 ![Haxe](https://img.shields.io/badge/Haxe-EA8220?style=for-the-badge&logo=haxe&logoColor=white)
 ___
