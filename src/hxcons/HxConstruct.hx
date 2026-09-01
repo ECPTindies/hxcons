@@ -1,23 +1,27 @@
 package hxcons;
 
-typedef AddAssetsParam = {
+typedef AddAssetsParam =
+{
     path:String,
     ?rename:String,
     ?include:Array<String>,
     ?embed:Bool
 }
 
-typedef LibraryEntry = {
+typedef LibraryEntry =
+{
     name:String,
     ?version:String,
 }
 
-typedef DefineParam = {
+typedef DefineParam =
+{
     id:String,
     ?value:Dynamic,
 }
 
-typedef DefineEntry = {
+typedef DefineEntry =
+{
     id:String,
     value:Dynamic,
 }

@@ -1,6 +1,7 @@
 package hxcons;
 
 import sys.FileSystem;
+import hxcons.Build;
 
 class Run
 {

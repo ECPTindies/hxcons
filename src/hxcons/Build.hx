@@ -5,30 +5,35 @@ import sys.FileSystem;
 
 using StringTools;
 
-typedef AppData = {
+typedef AppData =
+{
     title:String,
     version:String,
     meta:Dynamic,
 }
 
-typedef AssetEntry = {
+typedef AssetEntry =
+{
     path:String,
     rename:String,
     include:Array<String>,
     embed:Bool,
 }
 
-typedef LibraryEntry = {
+typedef LibraryEntry =
+{
     name:String,
     version:String,
 }
 
-typedef DefineEntry = {
+typedef DefineEntry =
+{
     id:String,
     value:Dynamic,
 }
 
-typedef BuildConfig = {
+typedef BuildConfig =
+{
     var app:AppData;
     var mainClass:String;
     var sourceDirs:Array<String>;
@@ -45,7 +50,8 @@ typedef BuildConfig = {
     var showConsole:Bool;
 }
 
-class Build {
+class Build
+{
     
     // haxelib run hxcons build から呼ばれるエントリポイント
     public static function run(hconstructPath:String)
@@ -82,7 +88,8 @@ class Build {
 
         var hxArgs:Array<String> = [];
 
-        for (dir in config.sourceDirs) {
+        for (dir in config.sourceDirs)
+        {
             hxArgs.push("-cp");
             hxArgs.push(dir);
         }
@@ -113,7 +120,8 @@ class Build {
                     hxArgs.push("-resource");
                     hxArgs.push('$src@$resName');
                 }
-            } else {
+            } else
+            {
                 var resName = resolveAssetName(asset, asset.path);
                 hxArgs.push("-resource");
                 hxArgs.push('${asset.path}@$resName');
@@ -167,7 +175,8 @@ class Build {
             if (FileSystem.isDirectory(full))
             {
                 result = result.concat(collectFiles(full, include));
-            } else {
+            } else
+            {
                 if (matchesInclude(entry, include))
                 {
                     result.push(full);
@@ -239,10 +248,12 @@ class Build {
 
     static function resolveAssetName(asset:AssetEntry, filePath:String):String
     {
-        if (FileSystem.isDirectory(asset.path)) {
+        if (FileSystem.isDirectory(asset.path))
+        {
             var relPath = filePath.substr(asset.path.length + 1);
             return asset.rename != "" ? asset.rename + "/" + relPath : relPath;
-        } else {
+        } else
+        {
             return asset.rename != "" ? asset.rename : haxe.io.Path.withoutDirectory(asset.path);
         }
     }
@@ -255,7 +266,8 @@ class Build {
         {
             if (asset.embed) continue;
 
-            if (FileSystem.isDirectory(asset.path)) {
+            if (FileSystem.isDirectory(asset.path))
+            {
                 var files = collectFiles(asset.path, asset.include);
                 for (src in files) {
                     var relName = resolveAssetName(asset, src);
@@ -264,7 +276,8 @@ class Build {
                     sys.io.File.copy(src, dest);
                     log('Copied asset: $src -> $dest');
                 }
-            } else {
+            } else
+            {
                 var relName = resolveAssetName(asset, asset.path);
                 var dest = dist + "/assets/" + relName;
                 ensureDir(haxe.io.Path.directory(dest));
@@ -289,13 +302,15 @@ class Build {
 
         var buf = new StringBuf();
 
-        if (config.extraIncludes.length > 0) {
+        if (config.extraIncludes.length > 0)
+        {
             buf.add('<files id="haxe">\n');
             for (inc in config.extraIncludes) buf.add('   <compilerflag value="-I$inc"/>\n');
             buf.add('</files>\n');
         }
 
-        if (config.extraLibPaths.length > 0 || config.extraLibs.length > 0) {
+        if (config.extraLibPaths.length > 0 || config.extraLibs.length > 0)
+        {
             buf.add('<target id="haxe">\n');
             for (lp in config.extraLibPaths) buf.add('   <libpath name="$lp"/>\n');
             for (lib in config.extraLibs) buf.add('   <lib name="-l$lib" unless="windows"/>\n');

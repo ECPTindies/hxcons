@@ -2,7 +2,8 @@ package hxcons;
 
 using StringTools;
 
-class ProjectLoader {
+class ProjectLoader
+{
     public static function load(hxconstructPath:String):Dynamic
     {
         var content = sys.io.File.getContent(hxconstructPath);
@@ -78,7 +79,8 @@ class ProjectLoader {
         function resolveArray(arr:Array<String>):Void
         {
             if (arr == null) return;
-            for (i in 0...arr.length) {
+            for (i in 0...arr.length)
+            {
                 arr[i] = resolve(arr[i]);
             }
         }

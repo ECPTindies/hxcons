@@ -7,6 +7,11 @@ A build tool that compiles project using hxcpp.
 This tool does not include APIs for displaying windows and etc. functions.<br>
 You will need to implement those yourself!
 
+## Installing
+```
+haxelib install hxcons ?<version>
+```
+
 ## Usage
 #### 1. Make your project directory.
 For example, we'll name the folder `MyProject`.
